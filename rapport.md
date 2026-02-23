@@ -30,4 +30,11 @@
     - Pouvez-vous chercher un contenu parmi tous les champs ?  
       - pas dans l'interface admin
   - **4** :
+    - Ajout des filtres : ok
+      - `ModelAdmin.list_display` : colomnes qui apparaissent : **ok**
+      - `ModelAdmin.list_filter` : filtre par date a droite : **ok**
+      - `ModelAdmin.ordering` : ordre par default : **ok**
+      - `ModelAdmin.search_fields` : barre de recherche : **ok**
+
+
        
