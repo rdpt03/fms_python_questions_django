@@ -12,3 +12,5 @@
   - ENTITÉS PAS AFFICHE : oubli d'ajouter mon app sur INSTALLED_APPS : resolu
   - Ajouté : option pour ajouter les reponses au meme temps que les questions sur admin.py
   - erreur a l'ajout : resolu oubli de migrer
+- 2.2.1 3
+  - Ajouté 5 questions avec 3 reponses chaque
