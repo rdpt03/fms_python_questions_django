@@ -6,7 +6,7 @@
     - faire migrations : ok
     - register sur admin.py : 
 
-- 2.2.2 2
+- 2.2.1 2
     - acces a interface login : necessité de user
     - gerer l'user "python manage.py createsuperuser"
     - ENTITÉS PAS AFFICHE : oubli d'ajouter mon app sur INSTALLED_APPS : resolu
