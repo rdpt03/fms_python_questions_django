@@ -59,7 +59,13 @@
     - Explication : pour se connecter à l’admin, l’utilisateur doit avoir `is_staff=True` (Statut équipe)
       - Sans cela, Django refuse l’accès même si le compte existe et le mot de passe est correct
     - Conclusion : login impossible sans “Statut équipe”, c’est normal
+  
   - **6**
     - Reconnexion avec l’administrateur (super-utilisateur)
     - Activation du compte de l’utilisateur et changement de mot de passe → OK
     - Résultat : l’utilisateur peut maintenant se connecter à l’interface admin
+    
+  - **7**
+    - Désactivation du compte de l’utilisateur (au lieu de le supprimer) → OK
+    - Tentative de connexion avec l’utilisateur désactivé → impossible
+    - Conclusion : compte désactivé, l’utilisateur ne peut plus se connecter → OK
