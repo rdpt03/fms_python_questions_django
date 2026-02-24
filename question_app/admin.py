@@ -13,4 +13,11 @@ class QuestionAdmin(admin.ModelAdmin):
     ordering = ['pub_date']  # ordre par default
     search_fields = ['question_text']  # barre de recherche
 
+class ChoiceAdmin(admin.ModelAdmin):
+    list_display = ['choice_text', 'question', 'votes']  # colonnes affichées pour les réponses
+    list_filter = ['question']        # filtre les réponses selon la Question associée
+    ordering = ['question']           # ordre de tri selon la Question
+    search_fields = ['choice_text']   # recherche par texte de réponse
+
+admin.site.register(Choice, ChoiceAdmin)
 admin.site.register(Question, QuestionAdmin)

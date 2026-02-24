@@ -1,40 +1,46 @@
 
-- creation -> OK  
-- config -> ok  
-- add app -> ok  
-
+- creation -> OK
+- config -> OK
+- add app -> OK
 # Exercices
-
 ## 2.2.1
 
-  - **1** :   
-    - creation de model : ok  
-    - faire migrations : ok  
-    - register sur admin.py :   
-  
-  - **2** :  
-    - acces a interface login : necessité de user  
-    - gerer l'user "python manage.py createsuperuser"  
-    - ENTITÉS PAS AFFICHE : oubli d'ajouter mon app sur INSTALLED_APPS : resolu  
-    - Ajouté : option pour ajouter les reponses au meme temps que les questions sur admin.py  
-    - erreur a l'ajout : resolu oubli de migrer  
-    - Ajouté 5 questions avec 3 reponses chaque  
-  
-  - **3** :   
-    - Voyez-vous tous les attributs de vos classes ?  
-      - oui, les reponses et le nom, date et heure  
-    - Pouvez-vous filtrer vos données suivants tous les attributs ?  
-      - pas dans l'interface admin  
-    - Pouvez-vous trier vos données suivants tous les attributs ?  
-      - pas dans l'interface admin  
-    - Pouvez-vous chercher un contenu parmi tous les champs ?  
-      - pas dans l'interface admin
-  - **4** :
-    - Ajout des filtres : ok
-      - `ModelAdmin.list_display` : colomnes qui apparaissent : **ok**
-      - `ModelAdmin.list_filter` : filtre par date a droite : **ok**
-      - `ModelAdmin.ordering` : ordre par default : **ok**
-      - `ModelAdmin.search_fields` : barre de recherche : **ok**
+  - **1** :
+    - creation des modèles : OK
+    - migrations appliquées : OK
+    - enregistrement dans `admin.py` : OK
 
+  - **2** :
+    - accès à l’interface admin → nécessite un utilisateur
+    - création du superuser avec `python manage.py createsuperuser`
+    - ENTITÉS NON VISIBLES : app non ajoutée dans `INSTALLED_APPS` → corrigé
+    - ajout des réponses directement lors de la création d’une question (inline admin)
+    - erreur lors de l’ajout : tables non migrées → corrigé
+    - création de 5 questions avec 3 réponses chacune
 
-       
+  - **3** :    
+    - Voyez-vous tous les attributs de vos classes ?
+      - oui → texte, date, réponses, votes
+    - Pouvez-vous filtrer vos données selon les attributs ?
+      - non, pas avec l’admin par défaut
+    - Pouvez-vous trier vos données selon les attributs ?
+      - non, pas avec l’admin par défaut
+    - Pouvez-vous chercher un contenu parmi tous les champs ?
+      - non, pas avec l’admin par défaut
+
+  - **4.1** :    
+    - création de 2 classes d’administration personnalisées :        
+      - QuestionAdmin : OK
+      - ChoiceAdmin : OK
+
+  - **4.2** :
+    - ajout des options ModelAdmin sur les deux classes :
+      - `list_display` → afficher plusieurs attributs : OK
+      - `list_filter` → filtrage dans l’interface : OK            
+      - `ordering` → tri automatique des données : OK
+      - `search_fields` → barre de recherche : OK
+    - Résultat :
+      - affichage complet des données
+      - filtrage disponible
+      - tri fonctionnel
+      - recherche active dans l’admin
