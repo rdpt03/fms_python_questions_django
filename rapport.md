@@ -44,3 +44,18 @@
       - filtrage disponible
       - tri fonctionnel
       - recherche active dans l’admin
+
+  - **4.3**
+    - Enregistrement des classes d'administration :
+      - `admin.site.register(Question, QuestionAdmin)` → le modèle Question apparaît dans l’admin avec ses personnalisations 
+      - `admin.site.register(Choice, ChoiceAdmin)` → (optionnel) le modèle Choice apparaît dans l’admin avec ses personnalisations*
+    - Résultat : toutes les fonctionnalités ajoutées dans QuestionAdmin et ChoiceAdmin sont maintenant actives dans l’interface admin
+    
+  - **5**
+    - Ajout d’un nouvel utilisateur via l’admin 
+      - Ne pas donner “Statut équipe” ni “Statut super-utilisateur” → utilisateur créé
+    - Tentative de connexion avec ce nouvel utilisateur → impossible
+      - Message : “nom d’utilisateur ou mot de passe incorrect”
+    - Explication : pour se connecter à l’admin, l’utilisateur doit avoir `is_staff=True` (Statut équipe)
+      - Sans cela, Django refuse l’accès même si le compte existe et le mot de passe est correct
+    - Conclusion : login impossible sans “Statut équipe”, c’est normal
