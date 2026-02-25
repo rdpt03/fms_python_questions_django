@@ -252,52 +252,37 @@
         - On peut facilement ajuster la période en modifiant `timedelta(days=…)`.
 ---
 ## 3.2
-  - Objectif : Ajouter la date de publication à côté du titre de chaque sondage dans la page principale.
-  - Fichiers modifiés :
-    - `question_app/templates/question_app/index.html`
-    - `question_app/views.py` (déjà existant)
-    - `questionProject/urls.py` (pour que la racine / pointe sur index)
-  - Modifications apportées :
-  #### index.html :
-  ```
-  <ul>
-  {% for question in latest_question_list %}
-      <li>{{ question.question_text }} — Publié le {{ question.pub_date|date:"d/m/Y H:i" }}</li>
-  {% endfor %}
-  </ul>
-  ```
+  - 1 : Affichage de la date de publication dans `index.html`
+    - Objectif : montrer la date de publication à côté du titre de chaque sondage.
+    - Template : `index.html`
+    - Vue : `index()`
+    - Résultat :
+    ```
+    Comment ça va? — Publié le 19/01/2026 18:38
+    Quel type de musique aimez vous? — Publié le 21/01/2026 18:50
+    Qui est le moins cher — Publié le 20/02/2026 18:51
+    Quel est ta couleur préféré — Publié le 22/02/2026 18:52
+    Quel est le meilleur reseau de bus? — Publié le 16/02/2026 09:53
+    Quel est ton plat préféré? — Publié le 24/02/2026 10:51
+    ```
+    - Notes : l’affichage utilise `{{ question.pub_date|date:"d/m/Y H:i" }}`. 
+    - La racine `/` pointe vers cette page via urls.py.
 
-  #### urls.py :
-  ```
-  from django.contrib import admin
-  from django.urls import path
-  from question_app import views
-    
-  urlpatterns = [
-      path('admin/', admin.site.urls),
-      path('', views.index, name='index'),  # la racine pointe sur index.html
-  ]
-  ```
-  #### views.py :
-  ```
-  from django.shortcuts import render
-  from .models import Question
-
-  def index(request):
-      latest_question_list = Question.objects.order_by('-pub_date')[:5]
-      context = {'latest_question_list': latest_question_list}
-      return render(request, 'question_app/index.html', context)
-  ```
-  - Résultat obtenu dans le browser (http://127.0.0.1:8000/) :
-  ```
-  Comment ça va? — Publié le 19/01/2026 18:38
-  Quel type de musique aimez vous? — Publié le 21/01/2026 18:50
-  Qui est le moins cher — Publié le 20/02/2026 18:51
-  Quel est ta couleur préféré — Publié le 22/02/2026 18:52
-  Quel est le meilleur reseau de bus? — Publié le 16/02/2026 09:53
-  Quel est ton plat préféré? — Publié le 24/02/2026 10:51
-  ```
-  - Observations :
-    - Même sans créer explicitement /polls, la racine / montre les sondages avec leur date.
-      - La méthode {{ question.pub_date|date:"d/m/Y H:i" }} permet de formater la date pour plus de lisibilité. 
-      - Cette étape correspond uniquement à l’item 1 de l’exercice 3.2. Les items 2 et 3 seront réalisés plus tard avec de nouvelles URLs et templates.
+  - 2 : Liste de toutes les questions `/polls/all/` et page de détail
+    - Objectif : lister toutes les questions avec id et titre, chaque titre cliquable vers sa page de détail. 
+    - Templates : showall.html et showdetails.html 
+    - Vues : showall() et showone()
+    - Fonctionnalité :
+      - `/polls/all/` : liste toutes les questions avec leur id et titre, titres cliquables 
+      - `/polls/<id>/details/` (showdetails) : affiche question + date + toutes les réponses + nombre de votes 
+    - Exemple de sortie pour une question :
+    ```
+    id : 2
+    question : Quel type de musique aimez vous?
+    Publié le : 21/01/2026 18:50
+    Réponses :
+    - Dance | Vote : 0
+    - Rock | Vote : 0
+    - Rap | Vote : 0
+    ```
+    - Notes : accès aux réponses via question.choice_set.all() ; chaque lien construit dynamiquement avec <int:question_id> dans urls.py.
