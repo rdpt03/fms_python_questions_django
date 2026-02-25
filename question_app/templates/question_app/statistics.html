@@ -1,0 +1,9 @@
+<h2>Statistiques</h2>
+
+<ul>
+    <li>Total de sondages : {{ total_questions }}</li>
+    <li>Total de choix : {{ total_choices }}</li>
+    <li>Total de votes : {{ total_votes }}</li>
+    <li>Moyenne de votes par sondage : {{ avg_votes|floatformat:2 }}</li>
+    <li>Dernière question enregistrée : {{ last_question|date:"d/m/Y H:i" }}</li>
+</ul>

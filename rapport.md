@@ -286,7 +286,7 @@
     - Rap | Vote : 0
     ```
     - Notes : accès aux réponses via question.choice_set.all() ; chaque lien construit dynamiquement avec <int:question_id> dans urls.py.
-  - 3 – Page des résultats du sondage (`/polls/<id>/frequency/`)
+  - 3 : Page des résultats du sondage (`/polls/<id>/frequency/`)
     - Objectif : afficher les résultats d’un sondage avec le nombre de votes et le pourcentage pour chaque réponse. 
     - Modification réalisée :
       - lien des questions dans `/polls/all/` modifié pour pointer vers `/polls/<id>/frequency/`
@@ -307,3 +307,23 @@
       ```
       - Conclusion :
         la page frequency permet d’afficher les résultats du sondage de manière lisible avec valeurs absolues et relatives.
+
+  - 4 : Page de statistiques (`/polls/statistics/`)
+    - Objectif : afficher des statistiques globales sur les sondages. 
+    - Informations affichées :
+      - Nombre total de sondages : `6`
+      - Nombre total de choix : `21`
+      - Nombre total de votes : `50`
+      - Moyenne de votes par sondage : `8,33`
+      - Dernière question enregistrée : `24/02/2026 - 11:51`
+    - Notes :
+      - Les calculs utilisent les fonctions d’agrégation de Django : Count, Sum, Max. 
+      - La vue protège contre la division par zéro pour la moyenne. 
+    - Résultat obtenu :
+      ```
+      Total de sondages : 6
+      Total de choix : 21
+      Total de votes : 50
+      Moyenne de votes par sondage : 8,33
+      Dernière question enregistrée : 24/02/2026 11:51
+      ```

@@ -25,4 +25,5 @@ urlpatterns = [
     path('polls/all', views.showall, name='showall'),
     path('polls/details/<int:question_id>', views.showone, name='showall'),
     path('polls/<int:question_id>/frequency/', views.frequency, name='frequency'),
+    path('polls/statistics/', views.statistics, name='statistics'),
 ]

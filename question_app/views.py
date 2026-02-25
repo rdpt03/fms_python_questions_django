@@ -1,5 +1,6 @@
+from django.db.models import Sum, Max
 from django.shortcuts import render, get_object_or_404
-from .models import Question
+from .models import Question, Choice
 
 
 def index(request):
@@ -41,3 +42,26 @@ def frequency(request, question_id):
         'choices': choices_with_percent,
     }
     return render(request, 'question_app/show_frequency.html', context)
+
+def statistics(request):
+    total_questions = Question.objects.count()
+    total_choices = Choice.objects.count()
+
+    total_votes = Choice.objects.aggregate(total=Sum('votes'))['total'] or 0
+
+    if total_questions > 0:
+        avg_votes = total_votes / total_questions
+    else:
+        avg_votes = 0
+
+    last_question = Question.objects.aggregate(last=Max('pub_date'))['last']
+
+    context = {
+        'total_questions': total_questions,
+        'total_choices': total_choices,
+        'total_votes': total_votes,
+        'avg_votes': avg_votes,
+        'last_question': last_question,
+    }
+
+    return render(request, 'question_app/statistics.html', context)
