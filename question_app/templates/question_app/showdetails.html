@@ -1,0 +1,14 @@
+<ul>
+    <li> id : {{ question.id }}</li>
+    <li> question : {{ question.question_text }}</li>
+    <li> Publié le : {{ question.pub_date|date:"d/m/Y H:i" }}</li>
+    <li>Reponses :
+        <ul>
+            {% for c in question.choice_set.all %}
+            <li>
+                {{ c }} <br>Vote : {{ c.votes }}
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+</ul>

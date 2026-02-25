@@ -22,4 +22,6 @@ from question_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('polls/all', views.showall, name='showall'),
+    path('polls/details/<int:question_id>', views.showone, name='showall'),
 ]
