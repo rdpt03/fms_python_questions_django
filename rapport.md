@@ -286,3 +286,24 @@
     - Rap | Vote : 0
     ```
     - Notes : accès aux réponses via question.choice_set.all() ; chaque lien construit dynamiquement avec <int:question_id> dans urls.py.
+  - 3 – Page des résultats du sondage (`/polls/<id>/frequency/`)
+    - Objectif : afficher les résultats d’un sondage avec le nombre de votes et le pourcentage pour chaque réponse. 
+    - Modification réalisée :
+      - lien des questions dans `/polls/all/` modifié pour pointer vers `/polls/<id>/frequency/`
+      - création d’une vue qui calcule :
+        - total des votes 
+        - pourcentage pour chaque réponse 
+      - affichage des résultats dans un template dédié 
+      - Accès aux réponses :
+        question.choice_set.all()
+      - Protection appliquée :
+        gestion du cas où le total de votes = 0 (pas de division par zéro). 
+      - Résultat obtenu :
+      ```
+      Comment ça va?
+      Super Bien — Votes: 25 — 50,0%
+      Bien — Votes: 15 — 30,0%
+      Bof — Votes: 10 — 20,0%
+      ```
+      - Conclusion :
+        la page frequency permet d’afficher les résultats du sondage de manière lisible avec valeurs absolues et relatives.
