@@ -250,5 +250,54 @@
       - Observations :
         - Le filtre `pub_date__gte=une_semaine` permet de récupérer toutes les questions publiées récemment, ici dans les `7` derniers jours.
         - On peut facilement ajuster la période en modifiant `timedelta(days=…)`.
+---
+## 3.2
+  - Objectif : Ajouter la date de publication à côté du titre de chaque sondage dans la page principale.
+  - Fichiers modifiés :
+    - `question_app/templates/question_app/index.html`
+    - `question_app/views.py` (déjà existant)
+    - `questionProject/urls.py` (pour que la racine / pointe sur index)
+  - Modifications apportées :
+  #### index.html :
+  ```
+  <ul>
+  {% for question in latest_question_list %}
+      <li>{{ question.question_text }} — Publié le {{ question.pub_date|date:"d/m/Y H:i" }}</li>
+  {% endfor %}
+  </ul>
+  ```
 
-#
+  #### urls.py :
+  ```
+  from django.contrib import admin
+  from django.urls import path
+  from question_app import views
+    
+  urlpatterns = [
+      path('admin/', admin.site.urls),
+      path('', views.index, name='index'),  # la racine pointe sur index.html
+  ]
+  ```
+  #### views.py :
+  ```
+  from django.shortcuts import render
+  from .models import Question
+
+  def index(request):
+      latest_question_list = Question.objects.order_by('-pub_date')[:5]
+      context = {'latest_question_list': latest_question_list}
+      return render(request, 'question_app/index.html', context)
+  ```
+  - Résultat obtenu dans le browser (http://127.0.0.1:8000/) :
+  ```
+  Comment ça va? — Publié le 19/01/2026 18:38
+  Quel type de musique aimez vous? — Publié le 21/01/2026 18:50
+  Qui est le moins cher — Publié le 20/02/2026 18:51
+  Quel est ta couleur préféré — Publié le 22/02/2026 18:52
+  Quel est le meilleur reseau de bus? — Publié le 16/02/2026 09:53
+  Quel est ton plat préféré? — Publié le 24/02/2026 10:51
+  ```
+  - Observations :
+    - Même sans créer explicitement /polls, la racine / montre les sondages avec leur date.
+      - La méthode {{ question.pub_date|date:"d/m/Y H:i" }} permet de formater la date pour plus de lisibilité. 
+      - Cette étape correspond uniquement à l’item 1 de l’exercice 3.2. Les items 2 et 3 seront réalisés plus tard avec de nouvelles URLs et templates.
