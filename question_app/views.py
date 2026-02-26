@@ -6,6 +6,9 @@ from django.utils import timezone
 from .models import Question, Choice
 
 
+NB_MAX_CHOIX = 5
+
+
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]  # last 5 questions
     context = {'latest_question_list': latest_question_list}
@@ -46,6 +49,7 @@ def frequency(request, question_id):
     }
     return render(request, 'question_app/show_frequency.html', context)
 
+
 def statistics(request):
     total_questions = Question.objects.count()
     total_choices = Choice.objects.count()
@@ -71,7 +75,7 @@ def statistics(request):
 
 
 def add(request):
-    return render(request, 'question_app/create_question/add.html')
+    return render(request, 'question_app/create_question/add.html', {'liste_no_choix': range(NB_MAX_CHOIX)})
 
 
 def confirm_add(request):
@@ -83,10 +87,19 @@ def confirm_add(request):
         question = Question(question_text=question_text,
         pub_date=timezone.now())
         question.save()
-        return render(request, 'question_app/create_question//confirm_add.html')
+        # on traite à présent les champs de choix remplis
+        # (on s'arrête au premier vide)
+        for no_choix in range(NB_MAX_CHOIX):
+            nom_champ = 'choix_{}'.format(no_choix)
+            choice_text = request.POST[nom_champ].strip()
+            if choice_text:
+                choice = Choice(question=question,
+                choice_text=choice_text)
+                choice.save()
+            else:
+                break
+        return render(request, 'question_app/create_question/confirm_add.html')
     else:
         # réaffichage du formulaire de saisie de la question
         # avec le message d'erreur
-        return render(request, 'question_app/create_question//add.html', {
-            'error_message': "You didn't enter a question text",
-        })
+        return render(request, 'question_app/create_question/add.html', {'error_message': "You didn't enter a question text",})
