@@ -1,3 +1,4 @@
+<a href="{% url 'add' %}">Add a question</a>
 <ul>
 {% for question in latest_question_list %}
     <li>{{ question.question_text }} — Publié le {{ question.pub_date|date:"d/m/Y H:i" }}</li>

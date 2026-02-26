@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
 from question_app import views
 
 urlpatterns = [
@@ -26,4 +25,7 @@ urlpatterns = [
     path('polls/details/<int:question_id>', views.showone, name='showall'),
     path('polls/<int:question_id>/frequency/', views.frequency, name='frequency'),
     path('polls/statistics/', views.statistics, name='statistics'),
+    path('polls/add/', views.add, name='add'),
+    # ex: /polls/confirm_add
+    path('polls/confirm_add/', views.confirm_add, name='confirm_add'),
 ]
