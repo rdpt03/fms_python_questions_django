@@ -3,6 +3,7 @@ from django.db.models import Sum, Max
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
+from .forms import QuestionForm, ChoiceFormSet
 from .models import Question, Choice
 
 
@@ -75,7 +76,18 @@ def statistics(request):
 
 
 def add(request):
-    return render(request, 'question_app/create_question/add.html', {'liste_no_choix': range(NB_MAX_CHOIX)})
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        formset = ChoiceFormSet(request.POST)
+        if form.is_valid() and formset.is_valid():
+            question = form.save()
+            formset.instance = question
+            formset.save()
+            return redirect('index')
+    else:
+        form = QuestionForm()
+        formset = ChoiceFormSet()
+    return render(request, 'question_app/create_question/add.html', {'form': form, 'formset': formset})
 
 
 def confirm_add(request):
