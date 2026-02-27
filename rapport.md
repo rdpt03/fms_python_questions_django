@@ -252,7 +252,7 @@
         - On peut facilement ajuster la période en modifiant `timedelta(days=…)`.
 ---
 ## 3.2
-  - 1 : Affichage de la date de publication dans `index.html`
+  - ##### 1 : Affichage de la date de publication dans `index.html`
     - Objectif : montrer la date de publication à côté du titre de chaque sondage.
     - Template : `index.html`
     - Vue : `index()`
@@ -268,7 +268,7 @@
     - Notes : l’affichage utilise `{{ question.pub_date|date:"d/m/Y H:i" }}`. 
     - La racine `/` pointe vers cette page via urls.py.
 
-  - 2 : Liste de toutes les questions `/polls/all/` et page de détail
+  - ##### 2 : Liste de toutes les questions `/polls/all/` et page de détail
     - Objectif : lister toutes les questions avec id et titre, chaque titre cliquable vers sa page de détail. 
     - Templates : showall.html et showdetails.html 
     - Vues : showall() et showone()
@@ -286,7 +286,7 @@
     - Rap | Vote : 0
     ```
     - Notes : accès aux réponses via question.choice_set.all() ; chaque lien construit dynamiquement avec <int:question_id> dans urls.py.
-  - 3 : Page des résultats du sondage (`/polls/<id>/frequency/`)
+  - ##### 3 : Page des résultats du sondage (`/polls/<id>/frequency/`)
     - Objectif : afficher les résultats d’un sondage avec le nombre de votes et le pourcentage pour chaque réponse. 
     - Modification réalisée :
       - lien des questions dans `/polls/all/` modifié pour pointer vers `/polls/<id>/frequency/`
@@ -308,7 +308,7 @@
       - Conclusion :
         la page frequency permet d’afficher les résultats du sondage de manière lisible avec valeurs absolues et relatives.
 
-  - 4 : Page de statistiques (`/polls/statistics/`)
+  - ##### 4 : Page de statistiques (`/polls/statistics/`)
     - Objectif : afficher des statistiques globales sur les sondages. 
     - Informations affichées :
       - Nombre total de sondages : `6`
@@ -327,3 +327,37 @@
       Moyenne de votes par sondage : 8,33
       Dernière question enregistrée : 24/02/2026 11:51
       ```
+  - ##### 5 : Ajout d’un formulaire de création de question
+    - Un formulaire a été ajouté afin de permettre la création d’une nouvelle question depuis l’interface web. 
+    - Un lien a été intégré dans la page principale (index.html) pour accéder au formulaire d’ajout. 
+    - Deux routes ont été définies :
+      - `/polls/add/` : affiche le formulaire de saisie 
+      - `/polls/confirm_add/` : traite l’envoi du formulaire
+
+    - La vue de confirmation récupère le texte saisi, supprime les espaces inutiles et vérifie que le champ n’est pas vide. 
+    - Si le texte est valide, une nouvelle question est créée avec la date courante (timezone.now()) puis enregistrée en base de données. 
+    - Si le champ est vide, le formulaire est réaffiché avec un message d’erreur. 
+    - Deux templates ont été ajoutés :
+      - `add.html` : formulaire de saisie d’une question 
+      - `confirm_add.html` : message de confirmation après enregistrement
+    - ##### Résultat obtenu :
+      - L’utilisateur peut ajouter une question via le site. La question est enregistrée avec sa date de publication et un message de confirmation est affiché.
+  
+
+  - ##### 6 : Ajout de choix lors de la création d’une question
+    - Le formulaire de création de question a été enrichi pour permettre la saisie de jusqu’à 5 choix directement lors de l’ajout d’une question. 
+    - #### Fonctionnement :
+      - Dans views.py, une constante NB_MAX_CHOIX = 5 définit le nombre maximum de champs de saisie pour les choix. 
+      - La vue add transmet à la template une liste pour générer les 5 champs de saisie. 
+      - La vue confirm_add récupère le texte de la question et, si valide, crée la question en base avec la date courante. 
+      - Ensuite, elle parcourt les champs de choix saisis (choix_0 à choix_4) :
+        - Les champs non vides sont ajoutés comme objets Choice liés à la question. 
+        - Le traitement s’arrête dès qu’un champ vide est rencontré, pour ne pas créer de choix vides. 
+    - Si le texte de la question est vide, le formulaire est réaffiché avec un message d’erreur. 
+    - Template `add.html` :
+      - Affiche la saisie de la question 
+      - Affiche dynamiquement 5 champs de saisie pour les choix 
+      - Bouton de soumission 
+    - Résultat obtenu :
+      - L’utilisateur peut créer une nouvelle question et ajouter jusqu’à 5 choix en même temps. 
+      - Seuls les champs remplis sont pris en compte et enregistrés en base de données.
